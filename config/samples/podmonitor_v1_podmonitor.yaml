@@ -1,0 +1,58 @@
+apiVersion: podmonitor.pod-monitor.io/v1
+kind: PodMonitor
+metadata:
+  name: podmonitor-sample
+  namespace: default
+spec:
+  # 监控的命名空间列表，如果为空则监控所有命名空间
+  namespaces:
+    - default
+    - production
+  
+  # 标签选择器，用于过滤要监控的 Pod
+  labelSelector:
+    app: batch-job
+  
+  # 最大运行时长（秒），超过此时间的 Pod 将被视为僵尸 Pod
+  # 这里设置为 3600 秒（1小时）
+  maxRunDurationSeconds: 3600
+  
+  # 检查间隔（秒），每隔多长时间检查一次 Pod 状态
+  # 默认 60 秒
+  checkIntervalSeconds: 60
+  
+  # 是否自动清理僵尸 Pod
+  autoCleanup: true
+  
+  # 清理前的宽限期（秒），给 Pod 一些时间完成
+  # 默认 300 秒（5分钟）
+  gracePeriodSeconds: 300
+
+  # 邮件通知配置
+  emailNotification:
+    # 是否启用邮件通知
+    enabled: true
+    
+    # 收件人邮箱列表
+    recipients:
+      - ops-team@example.com
+      - devops@example.com
+    
+    # SMTP 服务器配置
+    smtpServer: smtp.example.com
+    smtpPort: 587  # TLS 端口，非加密使用 25
+    
+    # 发件人邮箱
+    from: podmonitor@example.com
+    
+    # SMTP 认证（可选，如果为空则使用 from）
+    username: podmonitor@example.com
+    # 密码建议使用 Kubernetes Secret，通过环境变量注入
+    password: "your-smtp-password"
+    
+    # 是否使用 TLS
+    useTLS: true
+    
+    # 邮件主题（可选，支持 {count} 占位符）
+    subject: "PodMonitor 僵尸 Pod 告警"
+

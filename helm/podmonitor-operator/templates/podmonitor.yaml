@@ -1,0 +1,12 @@
+{{- if .Values.defaultMonitor.create }}
+apiVersion: podmonitor.pod-monitor.io/v1
+kind: PodMonitor
+metadata:
+  name: {{ .Values.defaultMonitor.name }}
+  namespace: {{ .Values.defaultMonitor.namespace }}
+  labels:
+    {{- include "podmonitor-operator.labels" . | nindent 4 }}
+spec:
+  {{- toYaml .Values.defaultMonitor.config | nindent 2 }}
+{{- end }}
+

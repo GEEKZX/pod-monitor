@@ -1,0 +1,42 @@
+{{- if .Values.samplePodMonitor.create }}
+apiVersion: podmonitor.pod-monitor.io/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "podmonitor-operator.fullname" . }}-sample
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "podmonitor-operator.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.samplePodMonitor.config.namespaces }}
+  namespaces:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.samplePodMonitor.config.labelSelector }}
+  labelSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  maxRunDurationSeconds: {{ .Values.samplePodMonitor.config.maxRunDurationSeconds }}
+  checkIntervalSeconds: {{ .Values.samplePodMonitor.config.checkIntervalSeconds }}
+  autoCleanup: {{ .Values.samplePodMonitor.config.autoCleanup }}
+  gracePeriodSeconds: {{ .Values.samplePodMonitor.config.gracePeriodSeconds }}
+  {{- if .Values.samplePodMonitor.config.emailNotification.enabled }}
+  emailNotification:
+    enabled: {{ .Values.samplePodMonitor.config.emailNotification.enabled }}
+    {{- if .Values.samplePodMonitor.config.emailNotification.recipients }}
+    recipients:
+      {{- toYaml .Values.samplePodMonitor.config.emailNotification.recipients | nindent 6 }}
+    {{- end }}
+    {{- if .Values.samplePodMonitor.config.emailNotification.smtpServer }}
+    smtpServer: {{ .Values.samplePodMonitor.config.emailNotification.smtpServer }}
+    {{- end }}
+    smtpPort: {{ .Values.samplePodMonitor.config.emailNotification.smtpPort }}
+    {{- if .Values.samplePodMonitor.config.emailNotification.from }}
+    from: {{ .Values.samplePodMonitor.config.emailNotification.from }}
+    {{- end }}
+    useTLS: {{ .Values.samplePodMonitor.config.emailNotification.useTLS }}
+    {{- if .Values.samplePodMonitor.config.emailNotification.subject }}
+    subject: {{ .Values.samplePodMonitor.config.emailNotification.subject }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+

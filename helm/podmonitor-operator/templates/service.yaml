@@ -1,0 +1,23 @@
+{{- if .Values.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "podmonitor-operator.fullname" . }}-metrics
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "podmonitor-operator.labels" . | nindent 4 }}
+  {{- with .Values.metrics.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.metrics.serviceType }}
+  ports:
+    - port: {{ .Values.metrics.servicePort }}
+      targetPort: 8080
+      protocol: TCP
+      name: http-metrics
+  selector:
+    {{- include "podmonitor-operator.selectorLabels" . | nindent 4 }}
+{{- end }}
+

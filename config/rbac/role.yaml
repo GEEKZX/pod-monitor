@@ -1,0 +1,49 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: podmonitor-manager-role
+rules:
+- apiGroups:
+  - podmonitor.pod-monitor.io
+  resources:
+  - podmonitors
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - podmonitor.pod-monitor.io
+  resources:
+  - podmonitors/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - podmonitor.pod-monitor.io
+  resources:
+  - podmonitors/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+

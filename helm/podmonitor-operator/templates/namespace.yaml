@@ -1,0 +1,8 @@
+{{- if .Values.namespace.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace.name | default (include "podmonitor-operator.fullname" .) }}
+  labels:
+    {{- include "podmonitor-operator.labels" . | nindent 4 }}
+{{- end }}

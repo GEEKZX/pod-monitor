@@ -1,0 +1,17 @@
+apiVersion: v2
+name: podmonitor-operator
+description: A Kubernetes Operator for monitoring and cleaning up zombie pods
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://github.com/pod-monitor/operator
+sources:
+  - https://github.com/pod-monitor/operator
+maintainers:
+  - name: PodMonitor Team
+keywords:
+  - kubernetes
+  - operator
+  - pod-monitor
+  - zombie-pods
+  - monitoring

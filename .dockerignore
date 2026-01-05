@@ -1,0 +1,8 @@
+bin/
+config/
+.git/
+.gitignore
+Makefile
+README.md
+*.md
+

@@ -1,0 +1,128 @@
+# Default values for podmonitor-operator
+# This is a YAML-formatted file.
+
+# Operator 镜像配置
+image:
+  repository: podmonitor-controller
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# 镜像拉取密钥（如果需要从私有仓库拉取）
+imagePullSecrets: []
+# - name: acr-secret
+
+# Operator 名称
+nameOverride: ""
+fullnameOverride: ""
+
+# ServiceAccount 配置
+serviceAccount:
+  # 是否创建 ServiceAccount
+  create: true
+  # ServiceAccount 名称（如果未设置，将使用 fullname）
+  name: ""
+  # 注解
+  annotations: {}
+
+# Operator 部署配置
+operator:
+  # 副本数（通常为 1，使用 leader election）
+  replicaCount: 1
+  
+  # 资源限制
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  
+  # 节点选择器
+  nodeSelector: {}
+  
+  # 容忍度
+  tolerations: []
+  
+  # 亲和性
+  affinity: {}
+  
+  # Pod 安全上下文
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 65532
+    fsGroup: 65532
+  
+  # 容器安全上下文
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+  
+  # 环境变量
+  env: []
+  # - name: SMTP_PASSWORD
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: smtp-credentials
+  #       key: password
+  
+  # 是否启用 leader election
+  leaderElection: true
+  
+  # 健康检查配置
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8081
+    initialDelaySeconds: 15
+    periodSeconds: 20
+  
+  readinessProbe:
+    httpGet:
+      path: /readyz
+      port: 8081
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+# CRD 管理
+crd:
+  # 是否安装 CRD（如果为 false，需要手动安装）
+  install: true
+
+# RBAC 配置
+rbac:
+  # 是否创建 RBAC 资源
+  create: true
+
+# 监控指标配置
+metrics:
+  # 是否启用指标
+  enabled: true
+  # 指标服务端口
+  servicePort: 8080
+  # Service 类型
+  serviceType: ClusterIP
+  # Service 注解
+  annotations: {}
+
+# 示例 PodMonitor 配置
+samplePodMonitor:
+  # 是否创建示例 PodMonitor 资源
+  create: false
+  # 示例配置
+  config:
+    namespaces:
+      - default
+    maxRunDurationSeconds: 3600
+    checkIntervalSeconds: 60
+    autoCleanup: true
+    gracePeriodSeconds: 300
+    emailNotification:
+      enabled: false
+      recipients: []
+      smtpServer: ""
+      smtpPort: 587
+      from: ""
+      useTLS: true
