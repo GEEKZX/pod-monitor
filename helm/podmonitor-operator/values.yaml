@@ -107,6 +107,12 @@ metrics:
   # Service 注解
   annotations: {}
 
+# SMTP Secret 配置（可选）
+smtp:
+  create: false          # 若需创建 Secret，请设为 true
+  secretName: smtp-credentials
+  password: ""           # 仅在 create=true 时使用，建议改为从外部 Secret 管理
+
 # 示例 PodMonitor 配置
 samplePodMonitor:
   # 是否创建示例 PodMonitor 资源
