@@ -188,16 +188,6 @@ func (r *PodMonitorReconciler) isZombiePod(ctx context.Context, pod *corev1.Pod,
 		switch pod.Status.Phase {
 		case corev1.PodRunning, corev1.PodPending:
 			// Running 或 Pending 状态但运行时间过长，视为僵尸 Pod
-			// 可以进一步检查容器状态，如果所有容器都在等待，更可能是僵尸 Pod
-			hasRunningContainer := false
-			for _, containerStatus := range pod.Status.ContainerStatuses {
-				if containerStatus.State.Running != nil {
-					hasRunningContainer = true
-					break
-				}
-			}
-			// 如果没有运行中的容器且运行时间过长，更可能是僵尸 Pod
-			// 但即使有运行中的容器，如果运行时间过长也可能是僵尸 Pod
 			return true
 		case corev1.PodUnknown:
 			// Unknown 状态且运行时间过长，视为僵尸 Pod

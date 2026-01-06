@@ -4,6 +4,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// +kubebuilder:object:generate=true
 // PodMonitorSpec 定义了 PodMonitor 的期望状态
 type PodMonitorSpec struct {
 	// 监控的命名空间列表，如果为空则监控所有命名空间
@@ -28,6 +29,7 @@ type PodMonitorSpec struct {
 	EmailNotification *EmailNotificationConfig `json:"emailNotification,omitempty"`
 }
 
+// +kubebuilder:object:generate=true
 // EmailNotificationConfig 邮件通知配置
 type EmailNotificationConfig struct {
 	// 是否启用邮件通知
@@ -58,6 +60,7 @@ type EmailNotificationConfig struct {
 	Subject string `json:"subject,omitempty"`
 }
 
+// +kubebuilder:object:generate=true
 // PodMonitorStatus 定义了 PodMonitor 的观察状态
 type PodMonitorStatus struct {
 	// 监控的 Pod 总数
@@ -76,6 +79,7 @@ type PodMonitorStatus struct {
 	ZombiePodList []ZombiePodInfo `json:"zombiePodList,omitempty"`
 }
 
+// +kubebuilder:object:generate=true
 // ZombiePodInfo 僵尸 Pod 信息
 type ZombiePodInfo struct {
 	// Pod 名称
@@ -113,9 +117,5 @@ type PodMonitorList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PodMonitor `json:"items"`
-}
-
-func init() {
-	SchemeBuilder.Register(&PodMonitor{}, &PodMonitorList{})
 }
 
