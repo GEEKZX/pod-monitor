@@ -3,9 +3,9 @@ entries:
   podmonitor-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2026-01-06T17:17:00.7008521+08:00"
+    created: "2026-01-06T17:23:28.1214443+08:00"
     description: A Kubernetes Operator for monitoring and cleaning up zombie pods
-    digest: c13173471c1e82ac9f9fb9323eeb54109c465eba84c81d951ed4ea2bf1c0bc83
+    digest: a3f23d0f742194968eabfe0de6bf2bf1c160f1a4de276db471c1426656210439
     home: https://github.com/pod-monitor/operator
     keywords:
     - kubernetes
@@ -22,4 +22,4 @@ entries:
     urls:
     - podmonitor-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2026-01-06T17:17:00.6996859+08:00"
+generated: "2026-01-06T17:23:28.1188051+08:00"

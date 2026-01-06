@@ -96,6 +96,11 @@ rbac:
   # 是否创建 RBAC 资源
   create: true
 
+# Namespace 配置（可选，通常使用 --create-namespace 参数）
+namespace:
+  create: false          # 是否通过 Chart 创建命名空间（通常使用 helm 的 --create-namespace）
+  name: podmonitor-system
+
 # 监控指标配置
 metrics:
   # 是否启用指标
