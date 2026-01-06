@@ -5,6 +5,10 @@ metadata:
   name: podmonitors.podmonitor.pod-monitor.io
   labels:
     {{- include "podmonitor-operator.labels" $ | nindent 4 }}
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 spec:
   group: podmonitor.pod-monitor.io
   versions:
