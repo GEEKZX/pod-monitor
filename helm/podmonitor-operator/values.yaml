@@ -113,7 +113,14 @@ smtp:
   secretName: smtp-credentials
   password: ""           # 仅在 create=true 时使用，建议改为从外部 Secret 管理
 
-# 示例 PodMonitor 配置
+# 默认 PodMonitor 配置（podmonitor.yaml 模板使用）
+defaultMonitor:
+  create: false          # 是否创建默认 PodMonitor
+  name: default-podmonitor
+  namespace: default
+  config: {}
+
+# 示例 PodMonitor 配置（podmonitor-sample.yaml 模板使用）
 samplePodMonitor:
   # 是否创建示例 PodMonitor 资源
   create: false
