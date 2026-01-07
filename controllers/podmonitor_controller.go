@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -161,9 +160,8 @@ func (r *PodMonitorReconciler) performMonitoring(ctx context.Context, podMonitor
 
 	// 如果检测到僵尸 Pod，打印列表
 	if len(zombiePods) > 0 {
-		// 构建僵尸 Pod 列表字符串 - 使用简单清晰的列表格式
-		var zombieList strings.Builder
-		zombieList.WriteString(fmt.Sprintf("\n========== 检测到 %d 个僵尸 Pod ==========\n", len(zombiePods)))
+		// 打印标题
+		logger.Info(fmt.Sprintf("========== 检测到 %d 个僵尸 Pod ==========", len(zombiePods)))
 		
 		for i, zombie := range zombiePods {
 			// 将秒转换为天
@@ -175,8 +173,8 @@ func (r *PodMonitorReconciler) performMonitoring(ctx context.Context, podMonitor
 				daysStr = fmt.Sprintf("%.0f 天", days) // 大于等于1天显示整数
 			}
 			
-			// 每个僵尸 Pod 单独一行，格式清晰
-			zombieList.WriteString(fmt.Sprintf("[%d] %s/%s | 运行时长: %s | 状态: %s | 创建时间: %s\n",
+			// 每个僵尸 Pod 单独一行日志，确保正确换行
+			logger.Info(fmt.Sprintf("[%d] %s/%s | 运行时长: %s | 状态: %s | 创建时间: %s",
 				i+1,
 				zombie.Namespace,
 				zombie.Name,
@@ -184,9 +182,7 @@ func (r *PodMonitorReconciler) performMonitoring(ctx context.Context, podMonitor
 				zombie.Status,
 				zombie.CreationTime.Format("2006-01-02 15:04:05")))
 		}
-		zombieList.WriteString("===================================================\n")
-		
-		logger.Info("僵尸 Pod 列表", "详情", zombieList.String())
+		logger.Info("===================================================")
 	}
 
 	// 如果检测到僵尸 Pod 且配置了邮件通知，发送邮件
