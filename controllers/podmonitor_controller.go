@@ -158,6 +158,19 @@ func (r *PodMonitorReconciler) performMonitoring(ctx context.Context, podMonitor
 	podMonitor.Status.ZombiePodList = zombiePods
 	podMonitor.Status.LastCheckTime = metav1.Now()
 
+	// 如果检测到僵尸 Pod，打印列表
+	if len(zombiePods) > 0 {
+		logger.Info("检测到僵尸 Pod", "数量", len(zombiePods))
+		for _, zombie := range zombiePods {
+			logger.Info("僵尸 Pod 详情",
+				"名称", zombie.Name,
+				"命名空间", zombie.Namespace,
+				"运行时长(秒)", zombie.RunDurationSeconds,
+				"状态", zombie.Status,
+				"创建时间", zombie.CreationTime.Format("2006-01-02 15:04:05"))
+		}
+	}
+
 	// 如果检测到僵尸 Pod 且配置了邮件通知，发送邮件
 	if len(zombiePods) > 0 && podMonitor.Spec.EmailNotification != nil {
 		emailSender := utils.NewEmailSender(podMonitor.Spec.EmailNotification)

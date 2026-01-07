@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zombie-pod-quick-test
+  namespace: default
+  labels:
+    app: zombie-pod-quick-test
+    purpose: testing
+spec:
+  restartPolicy: Never
+  containers:
+  - name: sleep
+    image: busybox:latest
+    command:
+    - /bin/sh
+    - -c
+    - |
+      echo "快速测试僵尸 Pod - 这个 Pod 会运行很长时间"
+      sleep 86400  # 运行 24 小时
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "50m"
+

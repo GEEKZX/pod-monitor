@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zombie-pod-example
+  namespace: default
+  labels:
+    app: zombie-pod-test
+    purpose: testing
+spec:
+  restartPolicy: Never
+  containers:
+  - name: busybox
+    image: busybox:latest
+    command:
+    - /bin/sh
+    - -c
+    - |
+      echo "这是一个测试僵尸 Pod，会持续运行"
+      echo "Pod 创建时间: $(date)"
+      echo "这个 Pod 会一直运行，直到被 PodMonitor 检测为僵尸 Pod 并清理"
+      while true; do
+        echo "$(date): Pod 仍在运行..."
+        sleep 3600
+      done
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "100m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"
+
